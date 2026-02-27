@@ -62,11 +62,11 @@ jobs:
           echo "tag=$(git describe --exact-match ${{ github.sha }})" >> "$GITHUB_OUTPUT"
 
 
-  trigger-github-release:
+ trigger-github-release:
     needs: get-tag-of-current-sha
     name: Trigger GitHub release workflow
-    if: needs.get-tag-of-current-sha.outputs.tag
-    # Runs job only if tag is present.
+    # Only run if a tag was actually found
+    if: needs.get-tag-of-current-sha.outputs.tag != ''
     uses: ./.github/workflows/release-on-github.yml
     with:
       tag: ${{ needs.get-tag-of-current-sha.outputs.tag }}
