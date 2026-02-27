@@ -27,15 +27,14 @@ jobs:
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY_ABHI }}
           gpg-passphrase: GPG_PASSPHRASE
 
-      - name: Publish with Maven deploy
+       - name: Publish with Maven deploy
         run: |
           if [ "${{ env.ACTIONS_STEP_DEBUG }}" == "true" ]; then
-            mvn --batch-mode --activate-profiles deploy --settings $GITHUB_WORKSPACE/settings.xml -Pcoverage clean deploy -X
+            mvn --batch-mode --activate-profiles deploy --settings $GITHUB_WORKSPACE/settings.xml -Pcoverage clean deploy -X -Dgpg.skip
           else
-            mvn --batch-mode --activate-profiles deploy --settings $GITHUB_WORKSPACE/settings.xml -Pcoverage clean deploy
+            mvn --batch-mode --activate-profiles deploy --settings $GITHUB_WORKSPACE/settings.xml -Pcoverage clean deploy -Dgpg.skip
           fi
         env:
-          MAVEN_USERNAME: ${{ secrets.NEXUS_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE_ABHI }}
 
